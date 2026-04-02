@@ -1,34 +1,62 @@
 # WAX n8n Workflows
 
-Este repositorio contiene los flujos de trabajo (workflows) de n8n para el proyecto WAX Studio, enfocado en la generación de prompts y modelos 3D de moda utilizando inteligencia artificial.
+Repositorio de workflows n8n para WAX Studio orientado a dos flujos principales:
+
+- chat de consultoría para construir prompts de moda 3D
+- generación de modelos 3D con Meshy AI desde texto o desde imagen
+
+## Archivo principal
+
+El archivo recomendado para importar manualmente en n8n es `WAX Studio - Fashion 3D Generator.json`.
+
+Ese workflow incluye:
+
+- `meshy-chat`: webhook del asistente conversacional
+- `meshy-generate`: generación text-to-3d
+- `meshy-status`: consulta de estado para tareas de texto
+- `meshy-generate-image`: generación image-to-3d
+- `meshy-status-image`: consulta de estado para tareas de imagen
+
+## Soporte de imagen
+
+La integración image-to-3d usa el endpoint `POST /openapi/v1/image-to-3d` de Meshy.
+
+Puntos importantes:
+
+- Meshy no recibe la imagen como `multipart/form-data` en este endpoint.
+- El workflow espera `imageDataUrl` en el body del webhook y lo reenvía a Meshy como `image_url` en JSON.
+- El valor de `image_url` debe ser un Data URI válido o una URL pública accesible.
 
 ## Estructura
 
-- `wax-studio-workflow.json`: Workflow principal para chat, generación y consulta de modelos 3D.
-- `n8n-workflows-base/`: Otros flujos auxiliares o históricos.
+- `WAX Studio - Fashion 3D Generator.json`: workflow final recomendado para importar.
+- `wax-studio-workflow.json`: copia versionada del workflow principal.
+- `n8n-workflows-base/`: workflows auxiliares o históricos.
 
-## Inspiración
+## Stack
 
-Este workflow se inspira en la necesidad de automatizar la creación de modelos 3D personalizados para moda, combinando:
-- Consultoría conversacional con IA (OpenAI GPT-4o-mini)
-- Generación de modelos 3D con Meshy AI
-- Orquestación y automatización flexible con n8n
+- n8n como orquestador
+- OpenAI GPT-4o-mini para la parte conversacional
+- Meshy AI para text-to-3d e image-to-3d
 
-El diseño busca facilitar la interacción natural con usuarios no técnicos, permitiendo tanto la generación por texto como, próximamente, por imagen de referencia.
+## Flujo de trabajo
 
-## Flujo de ramas
+1. El usuario conversa con el asistente para refinar una idea de accesorio.
+2. Puede generar un modelo 3D por texto.
+3. También puede generar un modelo 3D a partir de una imagen de referencia.
+4. El frontend consulta los endpoints de estado hasta obtener el modelo final.
 
-- `main`: Código listo para producción.
-- `develop`: Integración y pruebas.
-- `feature/*`: Nuevas funcionalidades.
-- `hotfix/*`: Correcciones urgentes.
+## Ramas
 
-## Contribución
+- `main`: producción
+- `develop`: integración
+- `feature/*`: trabajo de funcionalidades
+- `hotfix/*`: correcciones urgentes
 
-1. Crea una rama desde `develop` (`feature/tu-feature`).
-2. Realiza tus cambios y haz commits descriptivos.
-3. Abre un Pull Request a `develop` para revisión.
-4. Una vez aprobado, se fusiona a `main` tras pruebas.
+## Notas
+
+- Este repositorio contiene workflows n8n. Los cambios del frontend viven fuera de este repo.
+- Si se actualiza la lógica del frontend para image-to-3d, el contrato esperado por `meshy-generate-image` debe mantenerse alineado con `imageDataUrl`.
 
 ## Licencia
 
