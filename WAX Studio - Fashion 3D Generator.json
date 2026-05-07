@@ -474,8 +474,31 @@
     },
     {
       "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'Eres un extractor de datos de diseño de moda. A partir de la descripción del accesorio, extrae los campos en JSON con exactamente estas claves en inglés: type, material, color, shape, dimensions, details. Los valores deben estar en el idioma original de la descripción. Si algún campo no se menciona usa null. Devuelve SOLO el JSON, sin texto adicional.' }, { role: 'user', content: $json.body.description }] }) }}",
+        "options": {}
+      },
+      "id": "cot3-parse-design",
+      "name": "Parse Design Fields",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [160, 1520],
+      "credentials": {
+        "openAiApi": {
+          "id": "RBrCNGHPvqZ3Bnhp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ JSON.stringify({ received: true, taskId: $json.body.taskId }) }}",
+        "responseBody": "={{ JSON.stringify({ received: true, taskId: $('Cotizar Webhook').item.json.body.taskId, glbUrl: $('Cotizar Webhook').item.json.body.glbUrl, rawDescription: $('Cotizar Webhook').item.json.body.description, design: JSON.parse($json.choices[0].message.content) }) }}",
         "options": {
           "responseHeaders": {
             "entries": [
@@ -490,7 +513,7 @@
       "name": "Respond Cotizar",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [464, 1520]
+      "position": [764, 1520]
     }
   ],
   "pinData": {},
@@ -650,6 +673,17 @@
       ]
     },
     "Cotizar Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse Design Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Design Fields": {
       "main": [
         [
           {
