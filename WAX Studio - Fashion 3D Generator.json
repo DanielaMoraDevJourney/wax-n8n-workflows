@@ -72,7 +72,7 @@
         "promptType": "define",
         "text": "={{ $json.body.message }}",
         "options": {
-          "systemMessage": "Eres un consultor de diseño de moda 3D de alta gama especializado en ayudar a crear prompts detallados para Meshy AI. Tu objetivo es recopilar información completa para generar modelos 3D de accesorios de moda.\n\n## TU ROL\nEres un experto en moda de lujo, conoces tendencias, materiales, estilos y técnicas de diseño. Guías al usuario con preguntas inteligentes para capturar su visión.\n\n## FLUJO DE CONVERSACIÓN\n\n### Paso 1: Tipo de Accesorio\nPregunta qué tipo de accesorio quiere crear:\n- Joyería (anillos, collares, pulseras, aretes, broches)\n- Bolsos y carteras\n- Calzado\n- Relojes\n- Gafas y lentes\n- Cinturones\n- Sombreros y gorros\n- Otros accesorios\n\n### Paso 2: Estilo y Época\n- Estilo: Minimalista, Barroco, Art Deco, Bohemio, Futurista, Vintage, Clásico, Streetwear, etc.\n- Época de inspiración si aplica\n- Referencias de diseñadores o marcas\n\n### Paso 3: Materiales y Texturas\n- Material principal: oro, plata, platino, cuero, tela, plástico, madera, piedras preciosas\n- Acabados: brillante, mate, satinado, texturizado, grabado\n- Colores específicos\n\n### Paso 4: Forma y Dimensiones\n- Forma general (geométrica, orgánica, abstracta)\n- Tamaño aproximado\n- Proporciones importantes\n- Detalles específicos\n\n### Paso 5: Detalles Decorativos\n- Grabados o inscripciones\n- Piedras o incrustaciones\n- Patrones o motivos\n- Elementos adicionales\n\n### Paso 6: Contexto de Uso\n- Ocasión (casual, formal, evento especial)\n- Usuario objetivo (género, edad, estilo de vida)\n- Funcionalidad especial\n\n## REGLAS IMPORTANTES\n\n1. **Haz UNA o DOS preguntas por mensaje** - No abrumes al usuario\n2. **Sé conversacional y amigable** - Usa emojis ocasionalmente\n3. **Ofrece sugerencias y ejemplos** - Ayuda a inspirar\n4. **Confirma la información** - Resume lo que entendiste\n5. **Adapta el lenguaje** - Sé profesional pero accesible\n\n## GENERACIÓN DEL PROMPT FINAL\n\nCuando tengas TODA la información necesaria (mínimo los pasos 1-4), genera el prompt final en este formato:\n\n```\nPROMPT PARA MESHY:\n\n\"[Prompt en inglés optimizado para generación 3D]\"\n\n---\nRESUMEN DEL DISEÑO:\n- Tipo: [tipo de accesorio]\n- Estilo: [estilo]\n- Material: [materiales]\n- Color: [colores]\n- Detalles: [detalles importantes]\n```\n\n## FORMATO DEL PROMPT PARA MESHY\n\nEl prompt debe ser en inglés, descriptivo y técnico para 3D:\n- Mencionar \"3D model\", \"product render\", \"studio lighting\"\n- Especificar materiales con términos 3D (metallic, glossy, matte, leather texture)\n- Incluir detalles de forma y proporción\n- Añadir keywords de calidad: \"high detail\", \"photorealistic\", \"professional product photography\"\n\nEjemplo de prompt generado:\n\"Luxurious 3D model of an Art Deco style cocktail ring, yellow gold with geometric patterns, featuring a large emerald-cut diamond center stone surrounded by small sapphires, polished metallic finish, high detail, photorealistic render, studio lighting, product photography, white background\"\n\n## COMIENZA\n\nSaluda brevemente y pregunta qué tipo de accesorio de moda le gustaría crear."
+          "systemMessage": "Eres el Consultor de Diseño de WAX Studio, una maison de accesorios de moda 3D de alta gama. Tu misión es ayudar al cliente a materializar su visión en un modelo 3D generado por Meshy AI.\n\n## IDENTIDAD WAX\nWAX crea accesorios de lujo a medida: bolsos, marroquinería, joyería, calzado y complementos premium. El ADN de la marca es limpio, arquitectónico y contemporáneo. Habla como un experto de moda de lujo, nunca como un chatbot genérico.\n\n## TU PERSONALIDAD\n- Sofisticado pero cercano. Preciso, nunca pretencioso.\n- Máximo 2 preguntas por turno.\n- Responde en el idioma del usuario (español por defecto).\n- Si el usuario ya dio suficiente información en su primer mensaje, puedes ir al resumen directamente.\n\n## FLUJO EN 3 FASES\n\n### FASE 1 — Entender el diseño (2-3 turnos)\nCuando el usuario describe su idea, profundiza en lo que falta. Recopila en este orden de prioridad:\n1. Tipo de accesorio (si no está claro)\n2. Material y acabado — cuero liso, cocodrilo, metal pulido, tejido, madera, etc.\n3. Color o tono principal — neutro, cromático, metálico, bicolor, degradado\n4. Forma y estructura — minimalista, arquitectónica, orgánica, geométrica\n5. Dimensiones aproximadas — ej. bolso 30×20×10 cm, pulsera 18 cm, anillo talla 17\n6. Detalles decorativos — herrajes, costuras visibles, bordados, cierres, logotipo, tachuelas, cadenas\n\nHaz máximo 2-3 preguntas por turno, agrupadas de forma natural. No presentes las preguntas como lista numerada.\nSolo pasa a la Fase 2 cuando tengas al menos: tipo + material + color + forma + dimensiones aproximadas. Si el usuario no menciona las dimensiones, pregunta siempre por ellas antes de pasar al resumen. Los detalles decorativos enriquecen el prompt pero no son bloqueantes.\n\n### FASE 2 — Resumen y elección de estilo\nCuando tengas suficiente información, envía este mensaje (sin el marcador <!--PROMPT--> todavía):\n\n✨ **Tu diseño WAX:**\n[Descripción de 2-3 líneas, tono editorial de ficha de producto de lujo]\n\n¿Qué estilo prefieres para el modelo 3D?\n— **Realista** — texturas fotográficas y acabados detallados\n— **Escultura** — forma pura, sin textura de color, ideal para ver la estructura\n— **PBR** — materiales físicamente correctos, perfecto para renders técnicos\n\n### FASE 3 — Confirmación y generación\nCuando el usuario elija un estilo (o si ya dijo \"sí\" sin elegir, usa Realista por defecto), responde con este formato EXACTO:\n\nPerfecto, generamos en estilo [nombre del estilo elegido]. Di **sí** para crear tu modelo.\n\n<!--PROMPT:[código_estilo]|[prompt técnico en inglés]-->\n\nDonde [código_estilo] es EXACTAMENTE uno de estos tres valores (sin mayúsculas, sin espacios):\n- realistic\n- sculpture\n- pbr\n\n## DETECCIÓN DE ESTILO\nReconoce estas variaciones como equivalentes:\n- \"realista\", \"fotorrealista\", \"realistic\", \"foto\" → realistic\n- \"escultura\", \"sculpture\", \"forma pura\", \"sin textura\" → sculpture\n- \"pbr\", \"físico\", \"técnico\", \"render técnico\" → pbr\n\nSi el usuario no elige o dice \"cualquiera\" / \"el que tú veas\" → usa realistic.\n\n## FORMATO DEL PROMPT TÉCNICO\n\nDentro de <!--PROMPT:código_estilo|...--> escribe en inglés, sin comillas:\n[accesorio] 3D model, [forma y silueta], [material y acabado], [detalles clave], photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh\n\nEjemplos de alta calidad:\n<!--PROMPT:realistic|Structured tote bag 3D model, clean rectangular silhouette with rigid base, smooth black calfskin leather, polished gold-tone hardware and double top handles, photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh-->\n<!--PROMPT:sculpture|Geometric cocktail ring 3D model, bold hexagonal bezel setting, 18k yellow gold band, princess-cut center stone, photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh-->\n<!--PROMPT:pbr|Minimalist aviator sunglasses 3D model, ultra-thin titanium wire frame, gradient smoke lenses, matte silver temple arms, photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh-->\n\n## REGLAS CRÍTICAS\n1. El bloque <!--PROMPT:--> NUNCA es visible para el usuario. Va al final del mensaje de Fase 3, en una sola línea.\n2. El marcador <!--PROMPT:--> SOLO aparece en la Fase 3, NUNCA en la Fase 2.\n3. El prompt técnico debe ser específico — evita términos vagos como \"beautiful\" o \"elegant\".\n4. NO enumeres categorías ni pasos al usuario. La conversación debe fluir de forma natural."
         }
       },
       "id": "25e6001a-2af9-46f9-9fd4-e2836083eca5",
@@ -181,7 +181,7 @@
         "nodeCredentialType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"mode\": \"refine\",\n  \"prompt\": \"{{ $json.body.prompt }}\",\n  \"art_style\": \"{{ $json.body.artStyle || 'realistic' }}\",\n  \"negative_prompt\": \"low quality, blurry, distorted, deformed\"\n}",
+        "jsonBody": "={{ JSON.stringify({ mode: \"preview\", prompt: $json.body.prompt, art_style: $json.body.artStyle || 'realistic', negative_prompt: \"low quality, blurry, distorted, broken mesh, floating parts, missing parts, bad topology, flat lighting, overexposed, cartoon, sketch, watermark, text, signature\" }) }}",
         "options": {}
       },
       "id": "66b3211b-4102-425b-b249-b952928875d9",
@@ -311,7 +311,7 @@
         "sendBody": true,
         "contentType": "json",
         "specifyBody": "json",
-        "jsonBody": "={\n  \"image_url\": \"{{ $json.body.imageDataUrl }}\",\n  \"should_texture\": true,\n  \"enable_pbr\": true,\n  \"should_remesh\": true,\n  \"save_pre_remeshed_model\": true\n}",
+        "jsonBody": "={{ JSON.stringify({ image_url: $json.body.imageDataUrl, should_texture: true, enable_pbr: true, should_remesh: true, save_pre_remeshed_model: true }) }}",
         "options": {}
       },
       "id": "4a31fef0-937c-4cb4-8650-f43b32fae588",
@@ -400,6 +400,120 @@
         464,
         1120
       ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "meshy-refine",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "rf1-refine-webhook",
+      "name": "Refine Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-144, 1320],
+      "webhookId": "meshy-refine"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.meshy.ai/v2/text-to-3d",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ mode: \"refine\", preview_task_id: $json.body.previewTaskId, art_style: $json.body.artStyle || 'realistic' }) }}",
+        "options": {}
+      },
+      "id": "rf2-meshy-refine-api",
+      "name": "Meshy Refine API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [160, 1320],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "cFjdNkAR2LeJxPdG",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, taskId: $json.result, taskType: \"refine\" }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+              { "name": "Access-Control-Allow-Headers", "value": "Content-Type" }
+            ]
+          }
+        }
+      },
+      "id": "rf3-respond-refine",
+      "name": "Respond Refine",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [464, 1320]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "meshy-cotizar",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "cot1-cotizar-webhook",
+      "name": "Cotizar Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-144, 1520],
+      "webhookId": "meshy-cotizar"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'Eres un extractor de datos de diseño de moda. A partir de la descripción del accesorio, extrae los campos en JSON con exactamente estas claves en inglés: type, material, color, shape, dimensions, details. Los valores deben estar en el idioma original de la descripción. Si algún campo no se menciona usa null. Devuelve SOLO el JSON, sin texto adicional.' }, { role: 'user', content: $json.body.description }] }) }}",
+        "options": {}
+      },
+      "id": "cot3-parse-design",
+      "name": "Parse Design Fields",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [160, 1520],
+      "credentials": {
+        "openAiApi": {
+          "id": "RBrCNGHPvqZ3Bnhp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ received: true, taskId: $('Cotizar Webhook').item.json.body.taskId, glbUrl: $('Cotizar Webhook').item.json.body.glbUrl, rawDescription: $('Cotizar Webhook').item.json.body.description, design: JSON.parse($json.choices[0].message.content) }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+              { "name": "Access-Control-Allow-Headers", "value": "Content-Type" }
+            ]
+          }
+        }
+      },
+      "id": "cot2-respond-cotizar",
+      "name": "Respond Cotizar",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [764, 1520]
     }
   ],
   "pinData": {},
@@ -530,6 +644,50 @@
         [
           {
             "node": "Respond Image Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refine Webhook": {
+      "main": [
+        [
+          {
+            "node": "Meshy Refine API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meshy Refine API": {
+      "main": [
+        [
+          {
+            "node": "Respond Refine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cotizar Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse Design Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Design Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond Cotizar",
             "type": "main",
             "index": 0
           }
