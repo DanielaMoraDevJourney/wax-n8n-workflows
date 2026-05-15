@@ -514,6 +514,63 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [764, 1520]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "meshy-analyze-image",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ai1-analyze-image-webhook",
+      "name": "Analyze Image Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-144, 1720],
+      "webhookId": "meshy-analyze-image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'Eres un extractor de datos de diseño de moda para una maison de accesorios de lujo. Analiza la imagen del accesorio (bolso, joyería, calzado, marroquinería) y devuelve un JSON con EXACTAMENTE estas claves en inglés: type, material, color, shape, dimensions, details. Los valores deben estar en español. Para dimensiones usa el formato \"NxNxNcm\" o \"NxNcm\" (ej: \"30x20x10cm\"). Si algún campo no es claramente identificable, hace tu mejor estimación basándote en el tipo de accesorio. Devuelve SOLO el JSON, sin texto adicional.' }, { role: 'user', content: [{ type: 'text', text: 'Analiza este accesorio y extrae sus campos de diseño.' }, { type: 'image_url', image_url: { url: $json.body.imageDataUrl } }] }] }) }}",
+        "options": {}
+      },
+      "id": "ai2-analyze-image-openai",
+      "name": "OpenAI Vision Analyze",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [160, 1720],
+      "credentials": {
+        "openAiApi": {
+          "id": "RBrCNGHPvqZ3Bnhp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ received: true, design: JSON.parse($json.choices[0].message.content) }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+              { "name": "Access-Control-Allow-Headers", "value": "Content-Type" }
+            ]
+          }
+        }
+      },
+      "id": "ai3-respond-analyze-image",
+      "name": "Respond Analyze Image",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [464, 1720]
     }
   ],
   "pinData": {},
@@ -688,6 +745,28 @@
         [
           {
             "node": "Respond Cotizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Image Webhook": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Vision Analyze",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Vision Analyze": {
+      "main": [
+        [
+          {
+            "node": "Respond Analyze Image",
             "type": "main",
             "index": 0
           }
