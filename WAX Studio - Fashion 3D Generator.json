@@ -594,7 +594,7 @@
         "nodeCredentialType": "openAiApi",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'gpt-image-1', prompt: 'Product photography sketch, clean white background, single accessory object, isometric three-quarter view, soft studio lighting, no people, no text: ' + $json.body.prompt, size: '1024x1024', quality: 'low', n: 1 }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-image-2', prompt: 'Product photography sketch, clean white background, single accessory object, isometric three-quarter view, soft studio lighting, no people, no text: ' + $json.body.prompt, size: '1024x1024', quality: 'low', n: 1 }) }}",
         "options": {}
       },
       "id": "sk2-openai-images",
