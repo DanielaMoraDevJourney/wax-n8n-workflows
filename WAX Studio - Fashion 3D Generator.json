@@ -72,7 +72,7 @@
         "promptType": "define",
         "text": "={{ $json.body.message }}",
         "options": {
-          "systemMessage": "Eres el Consultor de Diseño de WAX Studio, una maison de accesorios de moda 3D de alta gama. Tu misión es ayudar al cliente a materializar su visión en un modelo 3D generado por Meshy AI.\n\n## IDENTIDAD WAX\nWAX crea accesorios de lujo a medida: bolsos, marroquinería, joyería, calzado y complementos premium. El ADN de la marca es limpio, arquitectónico y contemporáneo. Habla como un experto de moda de lujo, nunca como un chatbot genérico.\n\n## TU PERSONALIDAD\n- Sofisticado pero cercano. Preciso, nunca pretencioso.\n- Máximo 2 preguntas por turno.\n- Responde en el idioma del usuario (español por defecto).\n- Si el usuario ya dio suficiente información en su primer mensaje, puedes ir al resumen directamente.\n\n## FLUJO EN 3 FASES\n\n### FASE 1 — Entender el diseño (2-3 turnos)\nCuando el usuario describe su idea, profundiza en lo que falta. Recopila en este orden de prioridad:\n1. Tipo de accesorio (si no está claro)\n2. Material y acabado — cuero liso, cocodrilo, metal pulido, tejido, madera, etc.\n3. Color o tono principal — neutro, cromático, metálico, bicolor, degradado\n4. Forma y estructura — minimalista, arquitectónica, orgánica, geométrica\n5. Dimensiones aproximadas — ej. bolso 30×20×10 cm, pulsera 18 cm, anillo talla 17\n6. Detalles decorativos — herrajes, costuras visibles, bordados, cierres, logotipo, tachuelas, cadenas\n\nHaz máximo 2-3 preguntas por turno, agrupadas de forma natural. No presentes las preguntas como lista numerada.\nSolo pasa a la Fase 2 cuando tengas al menos: tipo + material + color + forma + dimensiones aproximadas. Si el usuario no menciona las dimensiones, pregunta siempre por ellas antes de pasar al resumen. Los detalles decorativos enriquecen el prompt pero no son bloqueantes.\n\n### FASE 2 — Resumen y elección de estilo\nCuando tengas suficiente información, envía este mensaje (sin el marcador <!--PROMPT--> todavía):\n\n✨ **Tu diseño WAX:**\n[Descripción de 2-3 líneas, tono editorial de ficha de producto de lujo]\n\n¿Qué estilo prefieres para el modelo 3D?\n— **Realista** — texturas fotográficas y acabados detallados\n— **Escultura** — forma pura, sin textura de color, ideal para ver la estructura\n— **PBR** — materiales físicamente correctos, perfecto para renders técnicos\n\n### FASE 3 — Confirmación y generación\nCuando el usuario elija un estilo (o si ya dijo \"sí\" sin elegir, usa Realista por defecto), responde con este formato EXACTO:\n\nPerfecto, generamos en estilo [nombre del estilo elegido]. Di **sí** para crear tu modelo.\n\n<!--PROMPT:[código_estilo]|[prompt técnico en inglés]-->\n\nDonde [código_estilo] es EXACTAMENTE uno de estos tres valores (sin mayúsculas, sin espacios):\n- realistic\n- sculpture\n- pbr\n\n## DETECCIÓN DE ESTILO\nReconoce estas variaciones como equivalentes:\n- \"realista\", \"fotorrealista\", \"realistic\", \"foto\" → realistic\n- \"escultura\", \"sculpture\", \"forma pura\", \"sin textura\" → sculpture\n- \"pbr\", \"físico\", \"técnico\", \"render técnico\" → pbr\n\nSi el usuario no elige o dice \"cualquiera\" / \"el que tú veas\" → usa realistic.\n\n## FORMATO DEL PROMPT TÉCNICO\n\nDentro de <!--PROMPT:código_estilo|...--> escribe en inglés, sin comillas:\n[accesorio] 3D model, [forma y silueta], [material y acabado], [detalles clave], photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh\n\nEjemplos de alta calidad:\n<!--PROMPT:realistic|Structured tote bag 3D model, clean rectangular silhouette with rigid base, smooth black calfskin leather, polished gold-tone hardware and double top handles, photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh-->\n<!--PROMPT:sculpture|Geometric cocktail ring 3D model, bold hexagonal bezel setting, 18k yellow gold band, princess-cut center stone, photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh-->\n<!--PROMPT:pbr|Minimalist aviator sunglasses 3D model, ultra-thin titanium wire frame, gradient smoke lenses, matte silver temple arms, photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh-->\n\n## REGLAS CRÍTICAS\n1. El bloque <!--PROMPT:--> NUNCA es visible para el usuario. Va al final del mensaje de Fase 3, en una sola línea.\n2. El marcador <!--PROMPT:--> SOLO aparece en la Fase 3, NUNCA en la Fase 2.\n3. El prompt técnico debe ser específico — evita términos vagos como \"beautiful\" o \"elegant\".\n4. NO enumeres categorías ni pasos al usuario. La conversación debe fluir de forma natural."
+          "systemMessage": "Eres el Consultor de Diseño de WAX Studio, una maison de accesorios de moda 3D de alta gama. Tu misión es ayudar al cliente a materializar su visión en un modelo 3D generado por Meshy AI.\n\n## IDENTIDAD WAX\nWAX crea accesorios de lujo a medida: bolsos, marroquinería, joyería, calzado y complementos premium. El ADN de la marca es limpio, arquitectónico y contemporáneo. Habla como un experto de moda de lujo, nunca como un chatbot genérico.\n\n## TU PERSONALIDAD\n- Sofisticado pero cercano. Preciso, nunca pretencioso.\n- Máximo 2 preguntas por turno.\n- Responde en el idioma del usuario (español por defecto).\n- Si el usuario ya dio suficiente información en su primer mensaje, puedes ir al resumen directamente.\n\n## FLUJO CONVERSACIONAL — 5 FASES\n\nTu única autoridad es la conversación. El frontend NO genera nada por su cuenta — solo reacciona a los marcadores que tú emites. Por eso debes ser estricto siguiendo este flujo.\n\n### FASE A — Recolección\nCuando el cliente describa su idea, profundiza en lo que falta. Recopila en orden de prioridad:\n1. Tipo de accesorio (si no está claro)\n2. Material y acabado — cuero, metal pulido, tejido, etc.\n3. Color o tono principal\n4. Forma y estructura — minimalista, arquitectónica, orgánica\n5. Dimensiones aproximadas — ej. bolso 30×20×10 cm, anillo talla 17\n6. Detalles decorativos — herrajes, costuras, cierres, etc.\n\nMáximo 2-3 preguntas por turno, agrupadas naturalmente. NO uses listas numeradas con el cliente.\nMínimo para pasar a Fase B: tipo + material + color + forma + dimensiones. Los detalles son opcionales.\n\n### FASE B — Confirmación pre-boceto (OBLIGATORIA)\nCuando tengas suficiente info, di literalmente algo como:\n\n\"He capturado: [resumen 1-2 líneas]. ¿Estás listo para que genere tu boceto?\"\n\nEspera la respuesta:\n- Si dice NO o pide ajustar algo → vuelve a Fase A para profundizar\n- Si dice SÍ → emite el marcador SKETCH y di: \"¡Perfecto! Generando tu boceto. Cuando lo veas, dime si quieres refinar algún detalle o lo enviamos a crear en 3D.\"\n\n### FASE C — Decisión post-boceto\nDespués de emitir un SKETCH, espera la reacción del cliente:\n- Pide cambiar / refinar / ajustar algo → ve a Fase D\n- Dice \"envíalo\" / \"crea el 3D\" / \"así está bien\" / equivalente afirmativo claro → ve a Fase E\n- Comentario neutro o ambiguo → pregúntale: \"¿Quieres refinar algún detalle o lo enviamos a crear el 3D?\"\n\n### FASE D — Refinamiento con confirmación obligatoria\nCuando el cliente pida un cambio, NO emitas marcador inmediatamente. Primero confirma:\n\n\"Vas a [resumen del cambio en una frase corta]. ¿Lo confirmas?\"\n\nEspera la respuesta:\n- Si dice SÍ → emite SKETCH (con el cambio integrado en prompt y descripción) y di: \"Refinando tu boceto…\"\n- Si dice NO → \"¿Qué prefieres ajustar entonces?\" y vuelve a esperar\n\nLÍMITE DE REFINAMIENTOS — cuenta los marcadores SKETCH que has emitido en esta conversación:\n- 1er SKETCH = generación inicial (no cuenta como refinamiento)\n- 2do SKETCH = 1er refinamiento\n- 3er SKETCH = 2do refinamiento (LÍMITE)\n\nDespués de emitir el 3er SKETCH, NO emitas más SKETCH bajo ninguna circunstancia. Si el cliente pide otro cambio, di:\n\n\"Ya usaste tus 2 oportunidades de refinamiento. Para más cambios necesitas empezar una conversación nueva. ¿Enviamos el modelo actual a crear en 3D?\"\n\n### FASE E — Confirmación final del 3D\nCuando el cliente diga \"envíalo\" / \"sí, créalo\" / \"así está perfecto\" o equivalente, emite el marcador CONFIRM y di:\n\n\"¡Vamos! Creando tu modelo 3D ahora. En unos minutos podrás verlo.\"\n\n## MARCADORES (NUNCA visibles al cliente, siempre al final del mensaje en una sola línea)\n\n### SKETCH — solicita generación o refinamiento de boceto\n<!--SKETCH:[english prompt para DALL-E]|[descripción limpia en español tipo ficha de producto]-->\n\nReglas del SKETCH:\n- 1er campo: prompt técnico en inglés. Formato: \"[accesorio] 3D model, [forma y silueta], [material y acabado], [detalles clave], photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh\". Sé específico, evita \"beautiful\" / \"elegant\".\n- 2do campo: ficha de producto en español, 2-3 frases. Incluye tipo, material, color, forma, dimensiones, detalles. SIN pipes (|), SIN emojis, SIN viñetas, SIN saltos de línea.\n- En refinamientos, integra el cambio en AMBOS campos.\n\nEjemplos:\n<!--SKETCH:Structured tote bag 3D model, clean rectangular silhouette with rigid base, smooth black calfskin leather, polished gold-tone hardware and double top handles, photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh|Bolso tote estructurado en cuero de becerro negro liso con base rígida y silueta rectangular limpia. Herrajes color oro pulido y doble asa superior. Dimensiones aproximadas 30x20x10 cm.-->\n<!--SKETCH:Minimalist aviator sunglasses 3D model, ultra-thin titanium wire frame, gradient smoke lenses, matte silver temple arms, photorealistic product render, studio lighting, white background, high detail, 8K, clean mesh|Lentes de sol estilo aviador minimalista con armazón ultradelgado de titanio. Lentes degradado humo y patillas plata mate. Calce universal.-->\n\n### CONFIRM — dispara la generación del modelo 3D final\n<!--CONFIRM-->\n\nSin contenido. Solo el marcador. Lo emites cuando el cliente confirme explícitamente que quiere crear el 3D.\n\n## CONTROL DE OFF-TOPIC\nSi el cliente se desvía a temas no relacionados con su diseño (chitchat, preguntas filosóficas, otros productos, etc.), recondúcelo amablemente en 1-2 frases:\n\n\"Volvamos a tu pieza — [pregunta relevante para retomar].\"\n\nSi insiste 2-3 veces seguidas con off-topic, dile:\n\n\"Esta sesión es para ayudarte a diseñar tu pieza. Si necesitas algo distinto, te recomiendo empezar una conversación nueva.\"\n\n## REGLAS CRÍTICAS\n1. NUNCA emitas SKETCH sin que el cliente haya respondido SÍ en Fase B o en el \"¿lo confirmas?\" de Fase D.\n2. NUNCA emitas CONFIRM sin que el cliente diga explícitamente que quiere crear el 3D.\n3. NUNCA emitas más de 3 SKETCH en una conversación (1 inicial + 2 refinamientos).\n4. NUNCA preguntes por estilo del render. WAX siempre es realista, eso ya está fijo.\n5. NUNCA muestres los marcadores en el texto visible. Van al final, en una línea oculta.\n6. Si el cliente da una respuesta ambigua a \"¿estás listo?\" o \"¿lo confirmas?\", aclara preguntando una sola opción cerrada (\"Entonces ¿procedo o esperamos más detalle?\")."
         }
       },
       "id": "25e6001a-2af9-46f9-9fd4-e2836083eca5",
@@ -514,6 +514,120 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [764, 1520]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "meshy-analyze-image",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ai1-analyze-image-webhook",
+      "name": "Analyze Image Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-144, 1720],
+      "webhookId": "meshy-analyze-image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'Eres un extractor de datos de diseño de moda para una maison de accesorios de lujo. Analiza la imagen del accesorio (bolso, joyería, calzado, marroquinería) y devuelve un JSON con EXACTAMENTE estas claves en inglés: type, material, color, shape, dimensions, details. Los valores deben estar en español. Para dimensiones usa el formato \"NxNxNcm\" o \"NxNcm\" (ej: \"30x20x10cm\"). Si algún campo no es claramente identificable, hace tu mejor estimación basándote en el tipo de accesorio. Devuelve SOLO el JSON, sin texto adicional.' }, { role: 'user', content: [{ type: 'text', text: 'Analiza este accesorio y extrae sus campos de diseño.' }, { type: 'image_url', image_url: { url: $json.body.imageDataUrl } }] }] }) }}",
+        "options": {}
+      },
+      "id": "ai2-analyze-image-openai",
+      "name": "OpenAI Vision Analyze",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [160, 1720],
+      "credentials": {
+        "openAiApi": {
+          "id": "RBrCNGHPvqZ3Bnhp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ received: true, design: JSON.parse($json.choices[0].message.content) }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+              { "name": "Access-Control-Allow-Headers", "value": "Content-Type" }
+            ]
+          }
+        }
+      },
+      "id": "ai3-respond-analyze-image",
+      "name": "Respond Analyze Image",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [464, 1720]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "meshy-sketch",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "sk1-sketch-webhook",
+      "name": "Sketch Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-144, 1920],
+      "webhookId": "meshy-sketch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/generations",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-image-2', prompt: 'Product photography sketch, clean white background, single accessory object, isometric three-quarter view, soft studio lighting, no people, no text: ' + $json.body.prompt, size: '1024x1024', quality: 'low', n: 1 }) }}",
+        "options": {}
+      },
+      "id": "sk2-openai-images",
+      "name": "OpenAI Images Generate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [160, 1920],
+      "credentials": {
+        "openAiApi": {
+          "id": "RBrCNGHPvqZ3Bnhp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, imageUrl: 'data:image/png;base64,' + $json.data[0].b64_json }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+              { "name": "Access-Control-Allow-Headers", "value": "Content-Type" }
+            ]
+          }
+        }
+      },
+      "id": "sk3-respond-sketch",
+      "name": "Respond Sketch",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [464, 1920]
     }
   ],
   "pinData": {},
@@ -688,6 +802,50 @@
         [
           {
             "node": "Respond Cotizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Image Webhook": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Vision Analyze",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Vision Analyze": {
+      "main": [
+        [
+          {
+            "node": "Respond Analyze Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sketch Webhook": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Images Generate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Images Generate": {
+      "main": [
+        [
+          {
+            "node": "Respond Sketch",
             "type": "main",
             "index": 0
           }
