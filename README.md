@@ -29,9 +29,7 @@ Puntos importantes:
 
 ## Estructura
 
-- `WAX Studio - Fashion 3D Generator.json`: workflow final recomendado para importar.
-- `wax-studio-workflow.json`: copia versionada del workflow principal.
-- `n8n-workflows-base/`: workflows auxiliares o históricos.
+- `WAX Studio - Fashion 3D Generator.json`: workflow oficial, único archivo a importar en n8n.
 
 ## Stack
 
